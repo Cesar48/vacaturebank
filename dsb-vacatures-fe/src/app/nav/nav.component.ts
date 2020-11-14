@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { Location } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-nav',
@@ -9,6 +11,8 @@ import { map, shareReplay } from 'rxjs/operators';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
+  
+  route: string | undefined;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -16,6 +20,14 @@ export class NavComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver, location: Location, router: Router) {
+    router.events.subscribe(val => {
+      if (location.path() != "") {
+        this.route = location.path();
+      } else {
+        this.route = "Home";
+      }
+    });
+  }
 
 }

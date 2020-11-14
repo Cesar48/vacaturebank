@@ -1,17 +1,32 @@
 .sidenav-container {
-    height: 100%;
-  }
-  
-  .sidenav {
-    width: 200px;
-  }
-  
-  .sidenav .mat-toolbar {
-    background: inherit;
-  }
-  
-  .mat-toolbar.mat-primary {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+  background-color: #003366;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+  color: #fbe14c;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.nav-item {
+  color: white;
+}
+
+.nav-item:hover {
+  color: #fbe14c;
+}
+
+.nav-item.active {
+  background-color: #fbe14c;
+  color: #003366;
+}
