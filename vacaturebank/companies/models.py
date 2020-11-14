@@ -1,15 +1,15 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
 
-class CompanyUser(AbstractUser):
+class CompanyUser(User):
 	companyname = models.CharField(max_length=254, verbose_name='Naam van uw bedrijf', blank=False, null=False)
 	corp_email = models.EmailField(max_length=254, verbose_name='Bedrijfsemail', help_text='Op dit emailadres ontvangt u updates over uw vacatures etc', blank=False, null=False)
 	desc = models.TextField(verbose_name='Omschrijving van uw bedrijf', blank=False, null=False)
 
-	groups = None
-	user_permissions = None
+	# groups = None
+	# user_permissions = None
 
 	def __str__(self):
 		return self.companyname
@@ -22,6 +22,7 @@ class JobOffer(models.Model):
 	company = models.ForeignKey(CompanyUser, on_delete=models.CASCADE) #verwijder alle offers van een verwijderd bedrijf
 	name = models.CharField(max_length=254, verbose_name='Vacaturenaam', blank=False, null=False)
 	desc = models.TextField(verbose_name='Wat houdt de vacature in?', blank=False, null=False)
+	type_of_offer = models.ForeignKey(OfferType, on_delete=models.SET_NULL, verbose_name="Type vacature", blank=True, null=True) #verwijderde categorieën of losse vacatures zijn mogelijk
 
 class RequiredSkill(models.Model):
 	from applicants.models import JobSkill, EXP_CHOICES
