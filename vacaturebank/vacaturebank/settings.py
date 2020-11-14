@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'applicants',
+    'companies',
 ]
 
 MIDDLEWARE = [
@@ -50,8 +52,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'vacaturebank.urls'
-
-print(BASE_DIR)
 
 TEMPLATES = [
     {
