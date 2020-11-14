@@ -21,13 +21,13 @@ def signup(request):
 def index(request):
 	if not request.user.is_authenticated:
 		return HttpResponse('Unauthorized', status=401)
-	return HttpResponse('')
+	return HttpResponse('Hello, Company!')
 
 def create_job_offer(request, obj_id=-1): #creating new and editing existing job offers
 	# no input requirements for get
 	# needs correct value for each key of get-response for post
-	if not request.user.is_authenticated:
-		return HttpResponse('Unauthorized', status=401)
+	# if not request.user.is_authenticated:
+	# 	return HttpResponse('Unauthorized', status=401)
 
 	if obj_id > 0:
 		jo = JobOffer.objects.filter(id=obj_id).first()
@@ -36,8 +36,8 @@ def create_job_offer(request, obj_id=-1): #creating new and editing existing job
 	else:
 		jo = None
 
-	if not request.user.companyuser or not request.user.companyuser == jo.company:
-		return HttpResponse('Forbidden', status=403)
+	# if not request.user.companyuser or not request.user.companyuser == jo.company:
+	# 	return HttpResponse('Forbidden', status=403)
 
 	form = CreateJobOfferForm(request.POST or None, instance=jo)
 	if request.method == 'POST' and form.is_valid():
@@ -61,7 +61,7 @@ def get_matching_skills(request):
 	if 'type' in request.POST and request.POST['type']:
 		js = js.filter(type_of_skill_id=request.POST['type'])
 	if 'name' in request.POST and request.POST['name']:
-		js = js.filter(name__contains=request.POST['name'])
+		js = js.filter(name__icontains=request.POST['name'])
 	return HttpResponse(json.dumps(list(map(lambda x: {"name": x.name, "id": x.id}, js))), content_type='application/json')
 
 def add_job_skills(request, offerid):
@@ -70,8 +70,8 @@ def add_job_skills(request, offerid):
 	if not jo:
 		return HttpResponse('Vacature niet gevonden: ' + str(offerid), status=404)
 
-	if not request.user.companyuser or not request.user.companyuser == jo.company:
-		return HttpResponse('Forbidden', status=403)
+	# if not request.user.companyuser or not request.user.companyuser == jo.company:
+	# 	return HttpResponse('Forbidden', status=403)
 
 	if not ('skill' in request.POST and request.POST['skill'] and JobSkill.objects.filter(id=request.POST['skill'])):
 		return HttpResponse('Please provide a skill', status=400)
@@ -97,5 +97,5 @@ def form_to_json(form):
 			"errs": list(map(lambda x: x.message, form[name].errors.as_data())),
 		}
 		if isinstance(form[name].field.widget, django.forms.widgets.Select):
-			res['options'] = list(map(lambda x: x.data, form['name'].subwidgets))
+			res['options'] = list(map(lambda x: x.data, form[name].subwidgets))
 	return res

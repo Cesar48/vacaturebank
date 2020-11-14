@@ -15,6 +15,8 @@ def general_login(request):
 		if user:
 			if 'next' in request.GET:
 				return redirect(request.GET['next'])
-			elif user.companyuser:
-				return redirect('index')
+			elif hasattr(user, 'companyuser'):
+				return redirect('/companies/')
+			else:
+				return redirect('/applicants/')
 	return render(request, 'login.html', {})
